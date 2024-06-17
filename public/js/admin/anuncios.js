@@ -2,7 +2,11 @@
 
 let token = $('meta[name="csrf-token"]').attr("content");
 
-console.log('token', token);
+let hostUrl = window.location.href;
+
+var urlParts = hostUrl.split('/');
+urlParts.pop(); // Remover la última parte de la URL
+var urlBase = urlParts.join('/');
 
 const limpiarCampos = () => {
     document.getElementById('titulo').value = '';
@@ -158,7 +162,7 @@ const agregarAnuncio = (id = '') => {
     formData.append("url_telegram", urlTelegram);
     formData.append("id", id);
     // Enviar el formulario usando fetch
-    fetch("/admin/guardar_anuncio/" + id, {
+    fetch(urlBase + "/admin/guardar_anuncio/" + id, {
         method: "POST",
         headers: {
             "X-CSRF-TOKEN": token,
@@ -228,7 +232,7 @@ const cambiarEstadoAnuncio = (id, estado) => {
             const formData = new FormData();
             formData.append('id', id);
             formData.append('estado', estado);
-            fetch('/admin/update_estado', {
+            fetch(urlBase + '/admin/update_estado', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': token

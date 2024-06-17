@@ -28,7 +28,7 @@
                                 <tr>
                                     <th scope="row">{{ $anuncio->id_anuncio }}</th>
                                     <td class="w-25">
-                                        <img src="{{ $anuncio->imagen_principal }}" class="img-fluid img-thumbnail"
+                                        <img src="{{ asset($anuncio->imagen_principal) }}" class="img-fluid img-thumbnail"
                                             alt="Sheep">
                                     </td>
                                     <td>

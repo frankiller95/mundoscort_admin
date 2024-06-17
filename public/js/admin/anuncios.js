@@ -162,7 +162,7 @@ const agregarAnuncio = (id = '') => {
     formData.append("url_telegram", urlTelegram);
     formData.append("id", id);
     // Enviar el formulario usando fetch
-    fetch(urlBase + "/admin/guardar_anuncio/" + id, {
+    fetch(urlBase + "/guardar_anuncio/" + id, {
         method: "POST",
         headers: {
             "X-CSRF-TOKEN": token,
@@ -232,7 +232,7 @@ const cambiarEstadoAnuncio = (id, estado) => {
             const formData = new FormData();
             formData.append('id', id);
             formData.append('estado', estado);
-            fetch(urlBase + '/admin/update_estado', {
+            fetch(urlBase + '/update_estado', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': token

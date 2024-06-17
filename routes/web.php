@@ -28,7 +28,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/inicio', [AdminController::class, 'index'])->name('admin.index');
 Route::get('/cerrar-sesion', [AuthenticatedSessionController::class, 'destroy'])->name('cerrar-sesion');
 
 require __DIR__.'/auth.php';

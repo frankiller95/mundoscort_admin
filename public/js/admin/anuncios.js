@@ -60,16 +60,6 @@ const agregarAnuncio = (id = '') => {
     const profesion = document.getElementById("profesion").value;
     const peso = document.getElementById("peso").value;
 
-    console.log("titulo", titulo);
-    console.log("imagen", imagen);
-    console.log("localizacion", localizacion);
-    console.log("descripcion", descripcion);
-    console.log("edad", edad);
-    console.log("nombreApodo", nombreApodo);
-    console.log("nacionalidad", nacionalidad);
-    console.log("telefono", telefono);
-    console.log("zonaCiudad", zonaCiudad);
-    console.log("peso", peso);
 
     if (
         !titulo ||
@@ -162,7 +152,7 @@ const agregarAnuncio = (id = '') => {
     formData.append("url_telegram", urlTelegram);
     formData.append("id", id);
     // Enviar el formulario usando fetch
-    fetch(urlBase + "/guardar_anuncio/" + id, {
+    fetch(urlBase + "guardar_anuncio/" + id, {
         method: "POST",
         headers: {
             "X-CSRF-TOKEN": token,
@@ -171,7 +161,6 @@ const agregarAnuncio = (id = '') => {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log("data", data);
             if (data.success) {
                 /* alert('Anuncio agregado con éxito'); */
                 Swal.fire({
@@ -232,7 +221,7 @@ const cambiarEstadoAnuncio = (id, estado) => {
             const formData = new FormData();
             formData.append('id', id);
             formData.append('estado', estado);
-            fetch(urlBase + '/update_estado', {
+            fetch(urlBase + 'update_estado', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': token
@@ -241,7 +230,6 @@ const cambiarEstadoAnuncio = (id, estado) => {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('data', data);
                     if (data.success) {
                         /* alert('Anuncio agregado con éxito'); */
                         Swal.fire({

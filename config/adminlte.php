@@ -317,13 +317,13 @@ return [
         ],
         [
             'text' => 'Inicio',
-            'url' => 'inicio',
+            'url' => '',
             'icon' => 'fas fa-fw fa-home',
         ],
         ['header' => '--- Tu cuenta ---'],
         [
             'text' => 'Perfil',
-            'url' => 'profile',
+            'url' => 'admin/profile',
             'icon' => 'fas fa-fw fa-user',
         ],
         ['header' => '--- Sección de anuncios ---'],

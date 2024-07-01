@@ -3,7 +3,9 @@
 let token = $('meta[name="csrf-token"]').attr("content");
 
 let hostUrl = window.location.origin;
-
+if (hostUrl == "https://www.mundoscort.com.es") {
+    hostUrl = window.location.origin + "/login";
+}
 /* var urlParts = hostUrl.split('/');
 urlParts.pop(); // Remover la última parte de la URL
 var urlBase = urlParts.join('/'); */
@@ -153,7 +155,6 @@ const agregarAnuncio = (id = '') => {
     formData.append("url_telegram", urlTelegram);
     formData.append("id", id);
 
-    console.log('id', id);
     let urlRest = '';
     if (id == '' || id == null) {
         urlRest = hostUrl + "/admin/guardar_anuncio";
@@ -230,7 +231,7 @@ const cambiarEstadoAnuncio = (id, estado) => {
             const formData = new FormData();
             formData.append('id', id);
             formData.append('estado', estado);
-            fetch(urlBase + 'update_estado', {
+            fetch(hostUrl + '/admin/update_estado', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': token
@@ -273,4 +274,13 @@ const cambiarEstadoAnuncio = (id, estado) => {
             Swal.fire("Changes are not saved", "", "info");
         }
     });
+}
+
+function isNumberKey(evt) {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode != 8 && charCode != 0 && (charCode < 48 || charCode > 57)) {
+        evt.preventDefault();
+        return false;
+    }
+    return true;
 }

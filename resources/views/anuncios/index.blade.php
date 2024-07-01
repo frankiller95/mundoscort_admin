@@ -249,14 +249,14 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            function isNumberKey(evt) {
+            /* function isNumberKey(evt) {
                 var charCode = (evt.which) ? evt.which : evt.keyCode;
                 if (charCode != 8 && charCode != 0 && (charCode < 48 || charCode > 57)) {
                     evt.preventDefault();
                     return false;
                 }
                 return true;
-            }
+            } */
             // Función para mostrar u ocultar un elemento basado en su ID
             function toggleVisibility(container, id, isVisible) {
                 var elementContainer = document.getElementById(container);

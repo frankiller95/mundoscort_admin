@@ -61,6 +61,7 @@ const agregarAnuncio = (id = '') => {
     const peso = document.getElementById("peso").value;
 
 
+
     if (
         !titulo ||
         !localizacion ||

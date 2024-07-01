@@ -2,11 +2,11 @@
 
 let token = $('meta[name="csrf-token"]').attr("content");
 
-let hostUrl = window.location.href;
+let hostUrl = window.location.origin;
 
-var urlParts = hostUrl.split('/');
+/* var urlParts = hostUrl.split('/');
 urlParts.pop(); // Remover la última parte de la URL
-var urlBase = urlParts.join('/');
+var urlBase = urlParts.join('/'); */
 
 const limpiarCampos = () => {
     document.getElementById('titulo').value = '';
@@ -151,8 +151,16 @@ const agregarAnuncio = (id = '') => {
     formData.append("url_whatsaap", urlWhatsApp);
     formData.append("url_telegram", urlTelegram);
     formData.append("id", id);
+
+    console.log('id', id);
+    let urlRest = '';
+    if (id == '' || id == null) {
+        urlRest = hostUrl + "/admin/guardar_anuncio";
+    } else {
+        urlRest = hostUrl + "/admin/actualizar_anuncio/" + id;
+    }
     // Enviar el formulario usando fetch
-    fetch(urlBase + "guardar_anuncio/" + id, {
+    fetch(urlRest, {
         method: "POST",
         headers: {
             "X-CSRF-TOKEN": token,

@@ -86,7 +86,69 @@ trait traitAnuncios
         ], 201);
     } */
 
-    public function createOrUpdateAnuncio(Request $request, $id = null)
+    public function createAnuncio(Request $request)
+    {
+        if ($request->file('file')) {
+            $nombre_img = pathinfo($request->file('file')->getClientOriginalName())['filename'];
+            $img = $request->file('file');
+            $nombreimagen = Str::slug($nombre_img) . "." . $img->getClientOriginalExtension();
+            $img->move(public_path('/img/anuncios/'), $nombreimagen);
+            $ruta =  '/img/anuncios/' . $nombreimagen;
+        } else {
+            $ruta = $request->existing_image_path ?? null; // Use existing image path if no new image is uploaded
+        }
+
+        $disponibilidades = implode(",", $request->disponibilidad);
+
+        $process = "create";
+        // Create new anuncio
+        $anuncio = new Anuncios();
+        $anuncio->titulo = $request->titulo;
+        $anuncio->imagen_principal = $ruta;
+        $anuncio->id_localizacion = $request->id_localizacion;
+        $anuncio->edad = $request->edad;
+        $anuncio->nombre_apodo = $request->nombre_apodo;
+        $anuncio->id_nacionalidad = $request->id_nacionalidad;
+        $anuncio->precio = isset($request->precio) ? $request->precio : '';
+        $anuncio->telefono = $request->telefono;
+        $anuncio->zona_de_ciudad = $request->zona_de_ciudad;
+        $anuncio->disponibilidad = $disponibilidades;
+        $anuncio->profesion = $request->profesion;
+        $anuncio->peso = $request->peso;
+        $anuncio->url_whatsaap = $request->url_whatsaap;
+        $anuncio->url_telegram = $request->url_telegram;
+        $anuncio->descripcion = $request->descripcion;
+        $anuncio->fecha_creacion = Carbon::now();
+        $anuncio->fecha_reactivacion = null;
+        $anuncio->id_usuario = Auth::user()->id;
+        $anuncio->estado = 1;
+        $anuncio->save();
+
+        foreach ($request->forma_pago as $forma_pago) {
+            $anuncio_forma_pago = new AnuncioFormaPago();
+            $anuncio_forma_pago->anuncio_id = $anuncio->id;
+            $anuncio_forma_pago->forma_pago_id = $forma_pago;
+            $anuncio_forma_pago->estado = 1;
+            $anuncio_forma_pago->save();
+        }
+
+        foreach ($request->categorias as $categoria) {
+            $anuncio_categoria = new AnuncioCategoria();
+            $anuncio_categoria->anuncio_id = $anuncio->id;
+            $anuncio_categoria->categoria_id = $categoria;
+            $anuncio_categoria->estado = 1;
+            $anuncio_categoria->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Anuncio agregado con éxito',
+            'anuncio' => $anuncio->id,
+            'proceso' => 'create'
+        ], 201);
+    }
+
+    public function updateAnuncio(Request $request, $id = null)
     {
         if ($request->file('file')) {
             $nombre_img = pathinfo($request->file('file')->getClientOriginalName())['filename'];
@@ -127,7 +189,6 @@ trait traitAnuncios
 
 
             $process = "update";
-
         } else {
             // Create new anuncio
             $anuncio = new Anuncios();
@@ -184,7 +245,6 @@ trait traitAnuncios
         ], 201);
     }
 
-
     public function listarAnuncios()
     {
         $anuncios = Anuncios::select([
@@ -200,8 +260,8 @@ trait traitAnuncios
             ->leftJoin('estados', 'anuncios.estado', '=', 'estados.id')
             ->leftJoin('anuncio_categoria', 'anuncios.id', '=', 'anuncio_categoria.anuncio_id')
             ->leftJoin('categorias', 'anuncio_categoria.categoria_id', '=', 'categorias.id');
-            /* ->where('anuncios.estado', 1) */
-            /* ->where('anuncio_categoria.estado', 1)
+        /* ->where('anuncios.estado', 1) */
+        /* ->where('anuncio_categoria.estado', 1)
             ->where('categorias.estado', 1) */
         if (Auth::user()->rol_id == 2) {
             $anuncios = $anuncios->where('anuncios.id_usuario', Auth::user()->id);

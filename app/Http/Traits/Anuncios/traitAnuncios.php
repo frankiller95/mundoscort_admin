@@ -100,6 +100,8 @@ trait traitAnuncios
 
         $disponibilidades = implode(",", $request->disponibilidad);
 
+        $slug = $this->createSlug($request->titulo);
+
         $process = "create";
         // Create new anuncio
         $anuncio = new Anuncios();
@@ -118,6 +120,8 @@ trait traitAnuncios
         $anuncio->url_whatsaap = $request->url_whatsaap;
         $anuncio->url_telegram = $request->url_telegram;
         $anuncio->descripcion = $request->descripcion;
+        $anuncio->premium = $request->premium == '' ? 0 : $request->premium;
+        $anuncio->slug = $slug;
         $anuncio->fecha_creacion = Carbon::now();
         $anuncio->fecha_reactivacion = null;
         $anuncio->id_usuario = Auth::user()->id;
@@ -245,6 +249,18 @@ trait traitAnuncios
         ], 201);
     }
 
+
+    public function createSlug($title)
+    {
+        // Reemplazar espacios en blanco por guiones
+        $slug = Str::slug($title, '-');
+
+        // Convertir todo el string a minúsculas
+        $slug = strtolower($slug);
+
+        return $slug;
+    }
+
     public function listarAnuncios()
     {
         $anuncios = Anuncios::select([
@@ -255,6 +271,7 @@ trait traitAnuncios
             'estados.estado_nombre',
             'anuncios.estado AS id_estado',
             'anuncios.fecha_creacion',
+            'anuncios.premium',
             DB::raw("GROUP_CONCAT(categorias.categoria ORDER BY categorias.categoria SEPARATOR ', ') AS categorias")
         ])
             ->leftJoin('estados', 'anuncios.estado', '=', 'estados.id')
@@ -296,6 +313,7 @@ trait traitAnuncios
             'peso',
             'url_whatsaap',
             'url_telegram',
+            'premium',
             'disponibilidad'
         )->where('id', $id)->first();
 

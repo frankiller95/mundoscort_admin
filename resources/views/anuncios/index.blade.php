@@ -209,6 +209,16 @@
                             </label>
                         </div>
                     </div>
+
+                    <div class="col-lg-4">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="1" id="premium"
+                                name="premium" {{ isset($anuncio->premium) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="premium">
+                                Anuncio premium
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row mt-1">

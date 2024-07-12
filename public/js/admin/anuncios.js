@@ -123,6 +123,8 @@ const agregarAnuncio = (id = '') => {
     // Obtener URL de WhatsApp y Telegram si están seleccionados
     const usarWhatsApp = document.getElementById("usar_whatsaap").checked;
     const usarTelegram = document.getElementById("usar_telegram").checked;
+    const premium = document.getElementById("premium").value ? document.getElementById("premium").value
+    : null;
     const urlWhatsApp = usarWhatsApp
         ? document.getElementById("url_whatsaap").value
         : "";
@@ -144,6 +146,7 @@ const agregarAnuncio = (id = '') => {
     formData.append("zona_de_ciudad", zonaCiudad);
     formData.append("profesion", profesion);
     formData.append("peso", peso);
+    formData.append("premium", premium);
     formasPago.forEach((pago) => formData.append("forma_pago[]", pago));
     disponibilidad.forEach((dispo) =>
         formData.append("disponibilidad[]", dispo)

@@ -31,6 +31,8 @@ class Anuncios extends Model
         'url_whatsaap',
         'url_telegram',
         'descripcion',
+        'premium',
+        'slug',
         'fecha_creacion',
         'fecha_reactivacion',
         'id_usuario',

@@ -111,7 +111,7 @@ trait traitAnuncios
         $anuncio->edad = $request->edad;
         $anuncio->nombre_apodo = $request->nombre_apodo;
         $anuncio->id_nacionalidad = $request->id_nacionalidad;
-        $anuncio->precio = isset($request->precio) ? $request->precio : '';
+        $anuncio->precio = isset($request->precio) ? $request->precio : null;
         $anuncio->telefono = $request->telefono;
         $anuncio->zona_de_ciudad = $request->zona_de_ciudad;
         $anuncio->disponibilidad = $disponibilidades;
@@ -179,7 +179,7 @@ trait traitAnuncios
             $anuncio->edad = $request->edad;
             $anuncio->nombre_apodo = $request->nombre_apodo;
             $anuncio->id_nacionalidad = $request->id_nacionalidad;
-            $anuncio->precio = isset($request->precio) ? $request->precio : '';
+            $anuncio->precio = isset($request->precio) ? $request->precio : null;
             $anuncio->telefono = $request->telefono;
             $anuncio->zona_de_ciudad = $request->zona_de_ciudad;
             $anuncio->disponibilidad = $disponibilidades;

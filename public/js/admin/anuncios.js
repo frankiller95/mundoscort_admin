@@ -3,7 +3,7 @@
 let token = $('meta[name="csrf-token"]').attr("content");
 
 let hostUrl = window.location.origin;
-if (hostUrl == "https://www.mundoscort.com.es") {
+if (hostUrl == 'https://mundoscort.com.es') {
     hostUrl = window.location.origin + "/login";
 }
 /* var urlParts = hostUrl.split('/');

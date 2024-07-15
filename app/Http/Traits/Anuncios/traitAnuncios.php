@@ -283,7 +283,7 @@ trait traitAnuncios
         if (Auth::user()->rol_id == 2) {
             $anuncios = $anuncios->where('anuncios.id_usuario', Auth::user()->id);
         }
-        $anuncios = $anuncios->groupBy('anuncios.id', 'anuncios.imagen_principal', 'anuncios.titulo', 'anuncios.nombre_apodo', 'estados.estado_nombre', 'anuncios.fecha_creacion', 'anuncios.estado')
+        $anuncios = $anuncios->groupBy('anuncios.id', 'anuncios.imagen_principal', 'anuncios.titulo', 'anuncios.nombre_apodo', 'estados.estado_nombre', 'anuncios.fecha_creacion', 'anuncios.estado', 'anuncios.premium')
             ->orderBy('anuncios.id', 'desc')
             ->get();
 

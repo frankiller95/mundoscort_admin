@@ -45,10 +45,10 @@
                                                 <i class="fas fa-pen" style="color: #fff;"></i>
                                             </a>
                                             @if ($anuncio->id_estado == 1 && Auth::user()->usuario_premium == 1 && $anuncio->premium == NULL)
-                                            <a class="btn btn-warning" href="javascript:void(0);" onclick="indicarPremium({{ $anuncio->id_anuncio }}, 1)" style="color: #fff;" title="Anuncio Premium"><i class="far fa-star" style="color: #fff;"></i></a>
+                                            <a class="btn btn-warning" href="javascript:void(0);" onclick="indicarPremium({{ $anuncio->id_anuncio }}, 1)" style="color: #fff;" title="Anuncio Top"><i class="far fa-star" style="color: #fff;"></i></a>
                                             @endif
                                             @if ($anuncio->id_estado == 1 && Auth::user()->usuario_premium == 1 && $anuncio->premium == 1)
-                                            <a class="btn btn-danger" href="javascript:void(0);" onclick="indicarPremium({{ $anuncio->id_anuncio }}, 0)" style="color: #fff;" title="Anuncio Premium"><i class="far fa-star" style="color: #fff;"></i></a>
+                                            <a class="btn btn-danger" href="javascript:void(0);" onclick="indicarPremium({{ $anuncio->id_anuncio }}, 0)" style="color: #fff;" title="Remover Top"><i class="far fa-star" style="color: #fff;"></i></a>
                                             @endif
                                             <br />
                                             @if ($anuncio->id_estado == 2)

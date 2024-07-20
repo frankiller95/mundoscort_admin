@@ -6,6 +6,8 @@ let hostUrl = window.location.origin;
 if (hostUrl == 'https://mundoscort.com.es' || hostUrl == 'https://mundoscort.com.es/') {
     hostUrl = window.location.origin + "/login";
 }
+
+hostUrl = window.location.origin + "/login";
 /* var urlParts = hostUrl.split('/');
 urlParts.pop(); // Remover la última parte de la URL
 var urlBase = urlParts.join('/'); */

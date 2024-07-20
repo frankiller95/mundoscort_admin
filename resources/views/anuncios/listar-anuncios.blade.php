@@ -41,9 +41,15 @@
                                     <td>
                                         <div class="d-flex">
                                             <a
-                                                class="btn btn-warning br-9 mx-1"href="{{ route('anuncios.edit', $anuncio->id_anuncio) }}">
-                                                <i class="fas fa-pen"></i>
+                                                class="btn btn-warning br-9 mx-1"href="{{ route('anuncios.edit', $anuncio->id_anuncio) }}" style="color: #fff;">
+                                                <i class="fas fa-pen" style="color: #fff;"></i>
                                             </a>
+                                            @if ($anuncio->id_estado == 1 && Auth::user()->usuario_premium == 1 && $anuncio->premium == NULL)
+                                            <a class="btn btn-warning" href="javascript:void(0);" onclick="indicarPremium({{ $anuncio->id_anuncio }}, 1)" style="color: #fff;" title="Anuncio Premium"><i class="far fa-star" style="color: #fff;"></i></a>
+                                            @endif
+                                            @if ($anuncio->id_estado == 1 && Auth::user()->usuario_premium == 1 && $anuncio->premium == 1)
+                                            <a class="btn btn-danger" href="javascript:void(0);" onclick="indicarPremium({{ $anuncio->id_anuncio }}, 0)" style="color: #fff;" title="Anuncio Premium"><i class="far fa-star" style="color: #fff;"></i></a>
+                                            @endif
                                             <br />
                                             @if ($anuncio->id_estado == 2)
                                                 <a class="btn btn-info br-9 mx-1"href="javascript:void(0);"

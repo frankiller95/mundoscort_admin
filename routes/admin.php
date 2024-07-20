@@ -13,6 +13,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/listar-anuncios', [AnunciosController::class, 'listarAnuncios']);
     Route::get('/anuncios/{id}/edit', [AnunciosController::class, 'edit'])->name('anuncios.edit');
     Route::post('/update_estado', [AnunciosController::class, 'changeEstadoAnuncio']);
+    Route::post('/set_anuncio_premium', [AnunciosController::class, 'updateAnuncioPremium'])->name('set-anuncio-premium');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

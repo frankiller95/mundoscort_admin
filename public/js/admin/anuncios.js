@@ -3,7 +3,7 @@
 let token = $('meta[name="csrf-token"]').attr("content");
 
 let hostUrl = window.location.origin;
-if (hostUrl == 'https://mundoscort.com.es') {
+if (hostUrl == 'https://mundoscort.com.es' || hostUrl == 'https://mundoscort.com.es/') {
     hostUrl = window.location.origin + "/login";
 }
 /* var urlParts = hostUrl.split('/');
@@ -34,19 +34,6 @@ const limpiarCampos = () => {
     document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
 };
 
-// Llama a esta función después de agregar el anuncio o en el lugar adecuado de tu lógica
-
-
-/**
- * Adds a new advertisement or updates an existing one.
- *
- * This function retrieves the form data from the DOM, validates the required fields,
- * and then sends the data to the server using a fetch request. The server response
- * is then handled, displaying success or error messages as appropriate.
- *
- * @param {number|null} id - The ID of the advertisement to update, or null to create a new one.
- * @returns {void}
- */
 const agregarAnuncio = (id = '') => {
     // Obtener los elementos del formulario
     const titulo = document.getElementById("titulo").value;
@@ -124,7 +111,7 @@ const agregarAnuncio = (id = '') => {
     const usarWhatsApp = document.getElementById("usar_whatsaap").checked;
     const usarTelegram = document.getElementById("usar_telegram").checked;
     const premium = document.getElementById("premium").value ? document.getElementById("premium").value
-    : null;
+        : null;
     const urlWhatsApp = usarWhatsApp
         ? document.getElementById("url_whatsaap").value
         : "";
@@ -277,6 +264,53 @@ const cambiarEstadoAnuncio = (id, estado) => {
             Swal.fire("Changes are not saved", "", "info");
         }
     });
+}
+
+const indicarPremium = (id, estado) => {
+
+    const formData = new FormData();
+    formData.append('id', id);
+    formData.append('estado', estado)
+    fetch(hostUrl + '/admin/set_anuncio_premium', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': token
+        },
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                /* alert('Anuncio agregado con éxito'); */
+                Swal.fire({
+                    icon: "success",
+                    title: `${data.title}`,
+                    text: `${data.message}`
+                });
+
+                setTimeout(function () {
+                    location.reload();
+                }, 4000);
+
+
+            } else {
+                /* alert('Hubo un error al agregar el anuncio'); */
+                Swal.fire({
+                    icon: "error",
+                    title: "ooppss...",
+                    text: 'Hubo un error en el proceso, contacta el administrador o intenta nuevamente'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: "error",
+                title: "ooppss...",
+                text: 'Hubo un error en el proceso, contacta el administrador o intenta nuevamente'
+            });
+        });
+
 }
 
 function isNumberKey(evt) {

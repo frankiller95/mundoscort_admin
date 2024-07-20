@@ -335,4 +335,15 @@ trait traitAnuncios
             'message' => $request->estado == 1 ? 'Anuncio activado con exito.' : 'El anuncio fue desactivado correctamente'
         ], 200);
     }
+
+    function updateAnuncioPremium(Request $request){
+
+        Anuncios::find($request->id)->update(['premium' => $request->estado == 0 ? NULL : $request->estado]);
+
+        return response()->json([
+            'success' => true,
+            'title' => $request->estado == 1 ? '¡Felicidades!!!' : 'Proceso completado.',
+            'message' => $request->estado == 1 ? 'El anuncio se actualizo a premium.' : 'El anuncio ya no es premium.'
+        ], 200);
+    }
 }

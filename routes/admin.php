@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AnunciosController;
-use App\Http\Controllers\admin\PremiumController;
+use App\Http\Controllers\Admin\PremiumController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;

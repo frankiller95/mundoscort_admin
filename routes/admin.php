@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AnunciosController;
+use App\Http\Controllers\admin\PremiumController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/anuncios/{id}/edit', [AnunciosController::class, 'edit'])->name('anuncios.edit');
     Route::post('/update_estado', [AnunciosController::class, 'changeEstadoAnuncio']);
     Route::post('/set_anuncio_premium', [AnunciosController::class, 'updateAnuncioPremium'])->name('set-anuncio-premium');
+    Route::get('/comprar_premium', [PremiumController::class, 'index'])->name('premium.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

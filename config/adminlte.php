@@ -378,7 +378,7 @@ return [
         ['header' => '--- Sección Premium ---'],
         [
             'text' => 'Comprar paquete',
-            'url' => '',
+            'url' => 'admin/comprar_premium',
             'icon' => 'fas fa-fw fas fa-shopping-bag',
         ],
         [

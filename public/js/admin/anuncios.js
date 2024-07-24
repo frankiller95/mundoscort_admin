@@ -8,9 +8,6 @@ if (hostUrl == 'https://mundoscort.com.es' || hostUrl == 'https://mundoscort.com
 }
 
 hostUrl = window.location.origin + "/login";
-/* var urlParts = hostUrl.split('/');
-urlParts.pop(); // Remover la última parte de la URL
-var urlBase = urlParts.join('/'); */
 
 const limpiarCampos = () => {
     document.getElementById('titulo').value = '';
@@ -50,8 +47,6 @@ const agregarAnuncio = (id = '') => {
     const zonaCiudad = document.getElementById("zona_de_ciudad").value;
     const profesion = document.getElementById("profesion").value;
     const peso = document.getElementById("peso").value;
-
-
 
     if (
         !titulo ||

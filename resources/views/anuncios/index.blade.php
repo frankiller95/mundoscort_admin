@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Inicio')
+@section('title', 'Anuncios')
 
 @section('content_header')
     <h1 class="text-center"><b>Aquí puedes crear tus anuncios:<b></h1>

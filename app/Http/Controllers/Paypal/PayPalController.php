@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Paypal;
 
 use App\Http\Controllers\Controller;
+use App\Models\PaquetesPremium;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PayPalController extends Controller
@@ -68,6 +73,8 @@ class PayPalController extends Controller
                 return response()->json(['error' => 'Failed to generate access token.'], 500);
             }
 
+            $price = PaquetesPremium::Find($cart['id'])->precio;
+
             $url = "{$this->base}/v2/checkout/orders";
             $payload = [
                 'intent' => 'CAPTURE',
@@ -75,11 +82,24 @@ class PayPalController extends Controller
                     [
                         'amount' => [
                             'currency_code' => 'EUR',
-                            'value' => '5',
+                            'value' => $price,
                         ],
                     ],
                 ],
             ];
+
+            $user = Auth::user();
+
+            $email = $user->email;
+            $name = $user->name;
+
+            /* $payer = [
+                'email_address' => $email,
+                'name' => [
+                    'given_name' => $name,
+                    'surname' => ''
+                ]
+            ];*/
 
             $response = $this->client->post($url, [
                 'headers' => [
@@ -99,58 +119,79 @@ class PayPalController extends Controller
 
     public function captureOrder($id)
     {
-        $accessToken = $this->generateAccessToken();
+        try {
+            // Asumiendo que ya tienes el $data disponible
+            $accessToken = $this->generateAccessToken();
 
-        if (!$accessToken) {
-            return response()->json(['error' => 'Failed to generate access token.'], 500);
+            if (!$accessToken) {
+                return response()->json(['error' => 'Failed to generate access token.'], 500);
+            }
+
+            $requestUrl = "{$this->base}/v2/checkout/orders/$id/capture";
+
+            $response = $this->client->request('POST', $requestUrl, [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                    'Authorization' => "Bearer $accessToken"
+                ]
+            ]);
+
+            /* return (string) ($response->getBody()); */
+            $data = json_decode($response->getBody(), true);
+
+            //dd($data);
+
+            $response = [];
+
+            if ($data['status'] === 'COMPLETED') {
+                // Obtener el paymentId y el monto pagado, de $data
+                $payPalPaymentId = $data['purchase_units'][0]['payments']['captures'][0]['id'];
+                $amount = $data['purchase_units'][0]['payments']['captures'][0]['amount']['value'];
+
+                // Convierte el valor a un entero
+                $amountInteger = intval($amount);
+
+                // Obtener información del paquete
+                $info_paquete = PaquetesPremium::where('precio', $amountInteger)->first();
+
+                if (!$info_paquete) {
+                    throw new \Exception("No se encontró un paquete con el monto especificado.");
+                }
+
+                $id_paquete = $info_paquete->id;
+                $cant_dias = $info_paquete->cantidad_dias;
+
+                // Obtener el id del usuario logueado
+                $userId = Auth::id();
+
+                // Calcular fechas de creación y vencimiento
+                $fechaCreacion = Carbon::now();
+                $fechaVencimiento = $fechaCreacion->copy()->addDays($cant_dias);
+
+                // Realizar el insert en la tabla usuarios_premium
+                $create_premium = DB::table('usuarios_premium')->insert([
+                    'id_user' => $userId,
+                    'id_paquete' => $id_paquete,
+                    'pay_payment_id' => $payPalPaymentId,
+                    'fecha_creacion' => $fechaCreacion,
+                    'fecha_vencimiento' => $fechaVencimiento,
+                    'estado' => 1 // o cualquier valor que necesites
+                ]);
+
+
+                $user_premium = User::Find($userId);
+                $user_premium->usuario_premium = 1;
+                $user_premium->save();
+
+                return response()->json($data);
+
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            Log::error('Failed to register premium user:', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Failed to register premium user.', 'error' => $e->getMessage()], 500);
         }
-
-        $requestUrl = "{$this->base}/v2/checkout/orders/$id/capture";
-
-        $response = $this->client->request('POST', $requestUrl, [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-                'Authorization' => "Bearer $accessToken"
-            ]
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        //dd($data);
-
-        if ($data['status'] === 'COMPLETED') {
-            // Obtener el paymentId y el monto pagado, de $data
-            $payPalPaymentId = $data['purchase_units'][0]['payments']['captures'][0]['id'];
-            $amount = $data['purchase_units'][0]['payments']['captures'][0]['amount']['value'];
-        }
-
-        return response()->json($data);
-
-
-
-        /*  $url = "{$this->base}/v2/checkout/orders";
-        $payload = [
-            'intent' => 'CAPTURE',
-            'purchase_units' => [
-                [
-                    'amount' => [
-                        'currency_code' => 'EUR',
-                        'value' => '5',
-                    ],
-                ],
-            ],
-        ];
-
-        $response = $this->client->post($url, [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => "Bearer {$accessToken}",
-            ],
-            'json' => $payload,
-        ]);
-
-        $result = $this->handleResponse($response);
-        return response()->json($result['jsonResponse'], $result['httpStatusCode']); */
     }
 }

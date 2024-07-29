@@ -9,7 +9,7 @@ if (hostUrl == 'https://mundoscort.com.es' || hostUrl == 'https://mundoscort.com
 hostUrl = window.location.origin + "/login"; */
 
 
-const paypalConfig = (price, button) => {
+const paypalConfig = (idPaquete, button) => {
     window.paypal
         .Buttons({
             style: {
@@ -18,9 +18,9 @@ const paypalConfig = (price, button) => {
                 color: "blue",
                 label: "buynow",
             },
-            message: {
+            /* message: {
                 amount: price,
-            },
+            }, */
             async createOrder() {
                 try {
                     const response = await fetch(hostUrl + "/admin/api/orders", {
@@ -32,10 +32,10 @@ const paypalConfig = (price, button) => {
                         // use the "body" param to optionally pass additional order information
                         // like product ids and quantities
                         body: JSON.stringify({
-                            cart: [{
-                                id: "YOUR_PRODUCT_ID",
-                                quantity: "YOUR_PRODUCT_QUANTITY",
-                            },],
+                            cart: {
+                                id: idPaquete,
+                                quantity: 1,
+                            },
                         }),
                     });
 
@@ -65,19 +65,6 @@ const paypalConfig = (price, button) => {
                         },
                     });
 
-                    /* const response = await fetch(hostUrl + "/admin/api/orders/capture", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            'X-CSRF-TOKEN': token
-                        },
-                        // use the "body" param to optionally pass additional order information
-                        // like product ids and quantities
-                        body: JSON.stringify({
-                            order_id: data.orderID
-                        }),
-                    });*/
-
                     const orderData = await response.json();
                     // Three cases to handle:
                     //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
@@ -100,7 +87,7 @@ const paypalConfig = (price, button) => {
                         // (3) Successful transaction -> Show confirmation or thank you message
                         // Or go to another URL:  actions.redirect('thank_you.html');
                         console.log('orderData', orderData);
-                        const transaction =
+                        /* const transaction =
                             orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
                             orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
                         alert(
@@ -111,7 +98,7 @@ const paypalConfig = (price, button) => {
                             "Capture result",
                             orderData,
                             JSON.stringify(orderData, null, 2)
-                        );
+                        ); */
                     }
                 } catch (error) {
                     console.error(error);
@@ -124,7 +111,7 @@ const paypalConfig = (price, button) => {
         .render("#paypal-button-container-" + button);
 }
 
-paypalConfig(5, 'basic');
-paypalConfig(10, 'standard');
-paypalConfig(20, 'unlimited');
+paypalConfig(1, 'basic');
+paypalConfig(2, 'standard');
+paypalConfig(3, 'unlimited');
 

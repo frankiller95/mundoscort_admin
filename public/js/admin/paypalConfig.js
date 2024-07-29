@@ -87,7 +87,7 @@ const paypalConfig = (idPaquete, button) => {
                         // (3) Successful transaction -> Show confirmation or thank you message
                         // Or go to another URL:  actions.redirect('thank_you.html');
                         console.log('orderData', orderData);
-                        location.reaload();
+                        window.location.reload();
                         /* const transaction =
                             orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
                             orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];

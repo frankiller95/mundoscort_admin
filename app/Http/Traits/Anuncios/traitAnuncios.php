@@ -120,7 +120,7 @@ trait traitAnuncios
         $anuncio->url_whatsaap = $request->url_whatsaap;
         $anuncio->url_telegram = $request->url_telegram;
         $anuncio->descripcion = $request->descripcion;
-        $anuncio->premium = $request->premium == '' ? 0 : $request->premium;
+        $anuncio->premium = 0;
         $anuncio->slug = $slug;
         $anuncio->fecha_creacion = Carbon::now();
         $anuncio->fecha_reactivacion = null;

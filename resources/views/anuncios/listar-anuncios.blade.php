@@ -18,6 +18,7 @@
                                 <th scope="col"></th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Categoria</th>
+                                <th scope="col">Usuario</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Fecha/hora<br>Creacion</th>
                                 <th scope="col">Acciones</th>
@@ -36,6 +37,7 @@
                                         <p>{{ $anuncio->titulo }}</p>
                                     </td>
                                     <td>{{ $anuncio->categorias }}</td>
+                                    <td>{{ $anuncio->name }}</td>
                                     <td>{{ $anuncio->estado_nombre }}</td>
                                     <td>{{ $anuncio->fecha_creacion }}</td>
                                     <td>

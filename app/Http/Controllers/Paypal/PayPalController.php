@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Paypal;
 
 use App\Http\Controllers\Controller;
+use App\Models\Anuncios;
 use App\Models\PaquetesPremium;
 use App\Models\User;
+use App\Models\UsuariosPremium;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
@@ -152,6 +154,8 @@ class PayPalController extends Controller
                 // Convierte el valor a un entero
                 $amountInteger = intval($amount);
 
+                $update = 0;
+
                 // Obtener información del paquete
                 $info_paquete = PaquetesPremium::where('precio', $amountInteger)->first();
 
@@ -164,9 +168,18 @@ class PayPalController extends Controller
 
                 // Obtener el id del usuario logueado
                 $userId = Auth::id();
+                $user_premium = User::Find($userId);
 
                 // Calcular fechas de creación y vencimiento
                 $fechaCreacion = Carbon::now();
+
+                if($user_premium->usuario_premium == 1){
+                    $info_premium = UsuariosPremium::where('id_user', $userId)->orderBy('id', 'desc')->first();
+                    $fechaCreacionString = $info_premium->fecha_vencimiento;
+                    $fechaCreacion = Carbon::parse($fechaCreacionString); // Convertir la cadena a una instancia de Carbon
+                    $update = 1;
+                }
+
                 $fechaVencimiento = $fechaCreacion->copy()->addDays($cant_dias);
 
                 // Realizar el insert en la tabla usuarios_premium
@@ -179,16 +192,25 @@ class PayPalController extends Controller
                     'estado' => 1 // o cualquier valor que necesites
                 ]);
 
+                if($update == 0){
+                    $user_premium->usuario_premium = 1;
+                    $user_premium->save();
 
-                $user_premium = User::Find($userId);
-                $user_premium->usuario_premium = 1;
-                $user_premium->save();
+                    $anuncios_premium = [
+                        'premium' => true,
+                        'fecha_reactivacion' => now(),
+                    ];
 
-                return response()->json($data);
+                    // Realizar la actualización de los anuncios premium
+                    Anuncios::where('id_usuario', $user_premium->id)
+                            ->where('estado', 1)
+                            ->update($anuncios_premium);
+                }
 
             }
 
             return response()->json($data);
+
         } catch (\Exception $e) {
             Log::error('Failed to register premium user:', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Failed to register premium user.', 'error' => $e->getMessage()], 500);

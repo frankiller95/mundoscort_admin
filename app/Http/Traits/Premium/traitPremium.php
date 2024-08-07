@@ -22,7 +22,7 @@ trait traitPremium
         $user = User::Find($userId);
         if ($user->usuario_premium) {
 
-            $info_premium = UsuariosPremium::where('id_user', $userId)->first();
+            $info_premium = UsuariosPremium::where('id_user', $userId)->orderBy('id', 'desc')->first();
 
             $info_paquete = PaquetesPremium::where('id', $info_premium->id_paquete)->first();
 

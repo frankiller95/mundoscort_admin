@@ -28,64 +28,6 @@ trait traitAnuncios
         return view('anuncios.index', ['provincias' => $provincias, 'nacionalidades' => $nacionalidades, 'formas_pagos' => $formas_pagos, 'categorias' => $categorias]);
     }
 
-    /* public function createAnuncio(Request $request)
-    {
-        if ($request->file('file')) {
-            $nombre_img = pathinfo($request->file('file')->getClientOriginalName())['filename'];
-            $img = $request->file('file');
-            $nombreimagen = Str::slug($nombre_img) . "." . $img->getClientOriginalExtension();
-            $img->move(public_path('/img/anuncios/'), $nombreimagen);
-            $ruta =  '/img/anuncios/' . $nombreimagen;
-        }
-
-        $disponibilidades = implode(",", $request->disponibilidad);
-
-        // Crear el anuncio
-        $anuncio = new Anuncios();
-        $anuncio->titulo = $request->titulo;
-        $anuncio->imagen_principal = $ruta;
-        $anuncio->id_localizacion = $request->id_localizacion;
-        $anuncio->edad = $request->edad;
-        $anuncio->nombre_apodo = $request->nombre_apodo;
-        $anuncio->id_nacionalidad = $request->id_nacionalidad;
-        $anuncio->precio = isset($request->precio) ? $request->precio : '';
-        $anuncio->telefono = $request->telefono;
-        $anuncio->zona_de_ciudad = $request->zona_de_ciudad;
-        $anuncio->disponibilidad = $disponibilidades;
-        $anuncio->profesion = $request->profesion;
-        $anuncio->peso = $request->peso;
-        $anuncio->url_whatsaap = $request->url_whatsaap;
-        $anuncio->url_telegram = $request->url_telegram;
-        $anuncio->descripcion = $request->descripcion;
-        $anuncio->fecha_creacion = Carbon::now();
-        $anuncio->fecha_reactivacion = null;
-        $anuncio->estado = 1;
-        $anuncio->save();
-
-        // Guardar las relaciones
-        foreach ($request->forma_pago as $forma_pago) {
-            $anuncio_forma_pago = new AnuncioFormaPago();
-            $anuncio_forma_pago->anuncio_id = $anuncio->id;
-            $anuncio_forma_pago->forma_pago_id = $forma_pago;
-            $anuncio_forma_pago->estado = 1;
-            $anuncio_forma_pago->save();
-        }
-
-        foreach ($request->categorias as $categoria) {
-            $anuncio_categoria = new AnuncioCategoria();
-            $anuncio_categoria->anuncio_id = $anuncio->id;
-            $anuncio_categoria->categoria_id = $categoria;
-            $anuncio_categoria->estado = 1;
-            $anuncio_categoria->save();
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Anuncio agregado con éxito',
-            'anuncio' => $anuncio->id
-        ], 201);
-    } */
-
     public function createAnuncio(Request $request)
     {
         if ($request->file('file')) {
@@ -120,7 +62,7 @@ trait traitAnuncios
         $anuncio->url_whatsaap = $request->url_whatsaap;
         $anuncio->url_telegram = $request->url_telegram;
         $anuncio->descripcion = $request->descripcion;
-        $anuncio->premium = 0;
+        $anuncio->premium = Auth::user()->usuario_premium == 1 ? 1 : 0;
         $anuncio->slug = $slug;
         $anuncio->fecha_creacion = Carbon::now();
         $anuncio->fecha_reactivacion = null;
@@ -272,18 +214,17 @@ trait traitAnuncios
             'anuncios.estado AS id_estado',
             'anuncios.fecha_creacion',
             'anuncios.premium',
+            'users.name',
             DB::raw("GROUP_CONCAT(categorias.categoria ORDER BY categorias.categoria SEPARATOR ', ') AS categorias")
         ])
             ->leftJoin('estados', 'anuncios.estado', '=', 'estados.id')
             ->leftJoin('anuncio_categoria', 'anuncios.id', '=', 'anuncio_categoria.anuncio_id')
-            ->leftJoin('categorias', 'anuncio_categoria.categoria_id', '=', 'categorias.id');
-        /* ->where('anuncios.estado', 1) */
-        /* ->where('anuncio_categoria.estado', 1)
-            ->where('categorias.estado', 1) */
+            ->leftJoin('categorias', 'anuncio_categoria.categoria_id', '=', 'categorias.id')
+            ->leftJoin('users', 'anuncios.id_usuario', '=', 'users.id');
         if (Auth::user()->rol_id == 2) {
             $anuncios = $anuncios->where('anuncios.id_usuario', Auth::user()->id);
         }
-        $anuncios = $anuncios->groupBy('anuncios.id', 'anuncios.imagen_principal', 'anuncios.titulo', 'anuncios.nombre_apodo', 'estados.estado_nombre', 'anuncios.fecha_creacion', 'anuncios.estado', 'anuncios.premium')
+        $anuncios = $anuncios->groupBy('anuncios.id', 'anuncios.imagen_principal', 'anuncios.titulo', 'anuncios.nombre_apodo', 'estados.estado_nombre', 'anuncios.fecha_creacion', 'anuncios.estado', 'anuncios.premium', 'users.name')
             ->orderBy('anuncios.id', 'desc')
             ->get();
 

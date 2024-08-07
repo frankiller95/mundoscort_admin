@@ -485,7 +485,7 @@
                                                     <div class="generic_price_tag clearfix">
                                                         <span class="price">
                                                             <span class="sign">€</span>
-                                                            <span class="currency">5</span>
+                                                            <span class="currency">1</span>
                                                             <span class="cent"></span>
                                                             <span class="month">/5 Días</span>
                                                         </span>

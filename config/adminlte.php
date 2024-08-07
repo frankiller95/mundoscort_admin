@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'inicio',
+    'dashboard_url' => 'https://www.mundoscort.com.es/',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',

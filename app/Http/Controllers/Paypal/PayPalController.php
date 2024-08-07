@@ -22,7 +22,7 @@ class PayPalController extends Controller
 
     public function __construct()
     {
-        $this->base = 'https://api-m.sandbox.paypal.com';
+        $this->base = 'https://api-m.paypal.com';
         $this->client = new Client();
     }
 

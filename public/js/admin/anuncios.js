@@ -49,15 +49,14 @@ const agregarAnuncio = (id = '') => {
     const peso = document.getElementById("peso").value;
 
     if (
-        !titulo ||
-        !localizacion ||
-        !descripcion ||
-        !edad ||
-        !nombreApodo ||
-        !nacionalidad ||
-        !telefono ||
-        !zonaCiudad ||
-        !peso
+        !titulo || titulo == '' ||
+        !localizacion || localizacion == '' ||
+        !descripcion || descripcion == '' ||
+        !edad || edad == '' ||
+        !nombreApodo || nombreApodo == '' ||
+        !nacionalidad || nacionalidad == '' ||
+        !telefono || telefono == '' ||
+        !zonaCiudad || zonaCiudad == ''
     ) {
         /* alert('Por favor complete todos los campos obligatorios marcados con *');
         return; */

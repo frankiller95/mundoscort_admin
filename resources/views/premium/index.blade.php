@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Anuncios')
+@section('title', 'Comprar paquete')
 
 @section('content_header')
     <h1 class="text-center"><b>Compra un paquete premium para tus anuncios<b></h1>

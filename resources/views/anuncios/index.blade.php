@@ -153,7 +153,7 @@
                     </div>
 
                     <div class="col-lg-4">
-                        <label class="form-label">Peso <span class="text-danger">*</span></label>
+                        <label class="form-label">Peso </label>
                         <input type="text" name="peso" id="peso" class="form-control"
                             value="{{ $anuncio->peso ?? '' }}" placeholder="Peso en Kg"
                             onkeypress="return isNumberKey(event)" required>

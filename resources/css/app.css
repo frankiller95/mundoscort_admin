@@ -1,3 +1,67 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-main {
+    color: #fff;
+    background-color: #641e33;
+    border-color: #641e33;
+    box-shadow: none;
+}
+
+.btn-main:hover {
+    color: #fff;
+    background-color: #7f243c;
+    border-color: #7f243c;
+}
+
+.btn-main:focus,
+.btn-main.focus {
+    color: #fff;
+    background-color: #7f243c;
+    border-color: #7f243c;
+    box-shadow: 0 0 0 0 rgba(100, 30, 51, 0.5);
+}
+
+.btn-main.disabled,
+.btn-main:disabled {
+    color: #fff;
+    background-color: #641e33;
+    border-color: #641e33;
+}
+
+.btn-main:not(:disabled):not(.disabled):active,
+.btn-main:not(:disabled):not(.disabled).active,
+.show > .btn-main.dropdown-toggle {
+    color: #fff;
+    background-color: #7f243c;
+    border-color: #641e33;
+}
+
+.btn-main:not(:disabled):not(.disabled):active:focus,
+.btn-main:not(:disabled):not(.disabled).active:focus,
+.show > .btn-main.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0 rgba(100, 30, 51, 0.5);
+}
+
+.btn-link {
+    font-weight: 400;
+    color: #641e33;
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    color: #7f243c;
+    text-decoration: none;
+}
+
+.btn-link:focus,
+.btn-link.focus {
+    text-decoration: none;
+}
+
+.btn-link:disabled,
+.btn-link.disabled {
+    color: #6c757d;
+    pointer-events: none;
+}

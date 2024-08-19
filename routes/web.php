@@ -31,3 +31,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/cerrar-sesion', [AuthenticatedSessionController::class, 'destroy'])->name('cerrar-sesion');
 
 require __DIR__.'/auth.php';
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

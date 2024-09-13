@@ -457,7 +457,7 @@
 
 @section('content')
 
-    <x-app-layout>
+    <div class="container">
         <div class="card">
             <div class="card-body mx-4">
                 <div class="container">
@@ -472,9 +472,9 @@
                         </ul>
                     </div>
                     <div class="row d-flex justify-content-center mt-5">
-                        <x-primary-button class="ms-4" onclick="verPaquetes()">
+                        <btn class="btn btn-primary ms-4" onclick="verPaquetes()">
                             Renovar paquete
-                        </x-primary-button>
+                        </btn>
                     </div>
                 </div>
             </div>
@@ -632,7 +632,7 @@
                 </div>
             </div>
         </div>
-    </x-app-layout>
+    </div>
 
 @stop
 

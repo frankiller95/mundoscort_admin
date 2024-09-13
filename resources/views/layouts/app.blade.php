@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,16 +14,16 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+    {{-- <link href="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.8/b-3.0.2/r-3.0.2/datatables.min.css" rel="stylesheet"> --}}
     <!-- Scripts -->
+    <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.8/b-3.0.2/r-3.0.2/datatables.min.css" rel="stylesheet">
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
+
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                {{-- <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a> --}}
                 <a class="navbar-brand" href="https://www.mundoscort.com.es/">
                     <img src="{{ asset('img/logo-mundo-scorts128x128.png') }}" alt="Logo" width="30" height="30"><b>Mundo</b>scort
                 </a>
@@ -31,14 +32,9 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
                     </ul>
-
-                    <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -73,11 +69,28 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav> --}}
 
         <main class="py-4">
             @yield('content')
         </main>
     </div>
+    @section('js')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var logoutButton = document.querySelector('.logout-button a');
+                if (logoutButton) {
+                    logoutButton.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        document.getElementById('logout-form').submit();
+                    });
+                }
+            });
+        </script>
+    @endsection
+
+    @stack('scripts') <!-- Esto permitirá que otras vistas agreguen scripts si es necesario -->
 </body>
+
 </html>

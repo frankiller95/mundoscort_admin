@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-    <x-app-layout>
+    {{-- <x-app-layout> --}}
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -74,7 +74,7 @@
                 </div>
             </div>
         </div>
-    </x-app-layout>
+    {{-- </x-app-layout> --}}
 @stop
 
 @section('css')

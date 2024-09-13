@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-    <x-app-layout>
+    {{-- <x-app-layout> --}}
         <div class="card">
             <div class='card-body' id="body-anuncios">
                 <div class="row mx-auto">
@@ -229,14 +229,11 @@
                     </div>
                 </div>
                 <div class="row mt-4">
-                    <x-primary-button class="ms-4"
-                        onclick="agregarAnuncio({{ isset($anuncio->id_anuncio) ? $anuncio->id_anuncio : null }})">
-                        {{ isset($anuncio->id_anuncio) ? __('Actualizar el anuncio') : __('Agregar el anuncio') }}
-                    </x-primary-button>
+                    <btn class="btn btn-primary ms-4" onclick="agregarAnuncio({{ isset($anuncio->id_anuncio) ? $anuncio->id_anuncio : null }})">{{ isset($anuncio->id_anuncio) ? __('Actualizar el anuncio') : __('Agregar el anuncio') }}</btn>
                 </div>
             </div>
         </div>
-    </x-app-layout>
+    {{-- </x-app-layout> --}}
 @stop
 
 @section('css')

@@ -456,7 +456,7 @@
 @stop
 
 @section('content')
-    <x-app-layout>
+    <div class="container">
         <div class="card">
             <div class='card-body' id="body-premium">
                 <div class="row mx-auto">
@@ -616,7 +616,7 @@
                 </div>
             </div>
         </div>
-    </x-app-layout>
+    </div>
 @stop
 
 @section('css')

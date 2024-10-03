@@ -381,6 +381,12 @@ return [
             'url' => 'admin/comprar_premium',
             'icon' => 'fas fa-fw fas fa-shopping-bag',
         ],
+        ['header' => '--- Sección admin ---'],
+        [
+            'text' => 'Usuarios',
+            'url' => 'admin/usuarios_registrados',
+            'icon' => 'fas fa-fw fas fa-users',
+        ],
         [
             'text' => '¡Cerrar sesión!',
             'icon_color' => 'red',

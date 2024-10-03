@@ -7,7 +7,7 @@ if (hostUrl == 'https://mundoscort.com.es' || hostUrl == 'https://mundoscort.com
     hostUrl = window.location.origin + "/login";
 }
 
-//hostUrl = window.location.origin + "/login";
+hostUrl = window.location.origin + "/login";
 
 const limpiarCampos = () => {
     document.getElementById('titulo').value = '';

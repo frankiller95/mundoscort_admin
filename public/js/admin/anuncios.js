@@ -23,7 +23,7 @@ var dropzone = new Dropzone("#dropzone", {
     }
 });
 
-/* hostUrl = window.location.origin + "/login"; */
+hostUrl = window.location.origin + "/login";
 
 const limpiarCampos = () => {
     document.getElementById('titulo').value = '';

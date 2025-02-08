@@ -353,7 +353,7 @@ function eliminarImagen(idImagen) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "/admin/anuncios/delete-image",
+                url: hostUrl + "/admin/anuncios/delete-image",
                 type: "POST",
                 headers: {
                     'X-CSRF-TOKEN': token

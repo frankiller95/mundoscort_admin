@@ -15,6 +15,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/actualizar_anuncio/{id}', [AnunciosController::class, 'updateAnuncio']);
     Route::get('/listar-anuncios', [AnunciosController::class, 'listarAnuncios']);
     Route::get('/anuncios/{id}/edit', [AnunciosController::class, 'edit'])->name('anuncios.edit');
+    Route::post('/anuncios/upload-images', [AnunciosController::class, 'uploadImages'])->name('anuncios.uploadImages');
+    Route::post('/anuncios/delete-image', [AnunciosController::class, 'deleteImage'])->name('anuncios.deleteImage');
     Route::post('/update_estado', [AnunciosController::class, 'changeEstadoAnuncio']);
     Route::post('/set_anuncio_premium', [AnunciosController::class, 'updateAnuncioPremium'])->name('set-anuncio-premium');
     Route::get('/comprar_premium', [PremiumController::class, 'index'])->name('premium.index');

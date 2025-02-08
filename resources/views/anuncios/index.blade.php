@@ -228,6 +228,35 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row mt-4">
+                    <div class="col-lg-12">
+                        <label class="form-label">Imágenes adicionales</label>
+                        <form action="{{ route('anuncios.uploadImages') }}" method="post" enctype="multipart/form-data"
+                              class="dropzone" id="dropzone">
+                            @csrf
+                            <input type="hidden" name="id_anuncio" value="{{ $anuncio->id_anuncio ?? '' }}">
+                        </form>
+                    </div>
+                </div>
+
+                @isset($imagenes_adicionales)
+                    <div class="row mt-4">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                @foreach ($imagenes_adicionales as $imagen)
+                                    <div class="col-md-3 text-center mb-3" id="imagen-{{ $imagen->id }}">
+                                        <img src="{{ asset($imagen->path_imagen) }}" alt="Imagen adicional" class="img-fluid rounded">
+                                        <button class="btn btn-danger btn-sm mt-2" onclick="eliminarImagen({{ $imagen->id }})">
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endisset
+
                 <div class="row mt-4">
                     <btn class="btn btn-primary ms-4" onclick="agregarAnuncio({{ isset($anuncio->id_anuncio) ? $anuncio->id_anuncio : null }})">{{ isset($anuncio->id_anuncio) ? __('Actualizar el anuncio') : __('Agregar el anuncio') }}</btn>
                 </div>
@@ -239,10 +268,14 @@
 @section('css')
     {{-- Add here extra stylesheets --}}
     {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 @stop
 
 @section('js')
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <script src="{{ asset('js/admin/anuncios.js') }}"></script>
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 

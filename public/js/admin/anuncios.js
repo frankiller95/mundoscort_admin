@@ -7,7 +7,23 @@ if (hostUrl == 'https://mundoscort.com.es' || hostUrl == 'https://mundoscort.com
     hostUrl = window.location.origin + "/login";
 }
 
-hostUrl = window.location.origin + "/login";
+Dropzone.autoDiscover = false;
+var dropzone = new Dropzone("#dropzone", {
+    /* url: "{{ route('anuncios.uploadImages') }}", */
+    paramName: "file",
+    maxFilesize: 5, // Tamaño máximo en MB
+    acceptedFiles: "image/*",
+    addRemoveLinks: true,
+    dictRemoveFile: "Eliminar",
+    headers: {
+        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+    },
+    success: function (file, response) {
+        file.uploadedId = response.path; // Guardamos el ID de la imagen en el servidor
+    }
+});
+
+/* hostUrl = window.location.origin + "/login"; */
 
 const limpiarCampos = () => {
     document.getElementById('titulo').value = '';
@@ -31,6 +47,11 @@ const limpiarCampos = () => {
 
     // Limpiar checkboxes y otros campos adicionales si es necesario
     document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+
+    // Reiniciar Dropzone eliminando todas las imágenes cargadas
+    if (dropzone) {
+        dropzone.removeAllFiles(true);
+    }
 };
 
 const agregarAnuncio = (id = '') => {
@@ -58,8 +79,6 @@ const agregarAnuncio = (id = '') => {
         !telefono || telefono == '' ||
         !zonaCiudad || zonaCiudad == ''
     ) {
-        /* alert('Por favor complete todos los campos obligatorios marcados con *');
-        return; */
         Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -138,6 +157,13 @@ const agregarAnuncio = (id = '') => {
     formData.append("url_telegram", urlTelegram);
     formData.append("id", id);
 
+    // Obtener imágenes adicionales de Dropzone
+    dropzone.files.forEach(file => {
+        if (file.uploadedId) {
+            formData.append("imagenes_adicionales[]", file.uploadedId);
+        }
+    });
+
     let urlRest = '';
     if (id == '' || id == null) {
         urlRest = hostUrl + "/admin/guardar_anuncio";
@@ -174,7 +200,7 @@ const agregarAnuncio = (id = '') => {
                 Swal.fire({
                     icon: "error",
                     title: "ooppss...",
-                    text: "Hubo un error al agregar el anuncio",
+                    text: data.message,
                 });
             }
         })
@@ -313,4 +339,47 @@ function isNumberKey(evt) {
         return false;
     }
     return true;
+}
+
+function eliminarImagen(idImagen) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/admin/anuncios/delete-image",
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                data: {
+                    id_imagen: idImagen
+                },
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire(
+                            'Eliminado!',
+                            response.message,
+                            'success'
+                        )
+                        location.reload();
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            'error en el proceso',
+                            'error'
+                        )
+                    }
+
+                }
+
+            });
+        }
+    });
 }

@@ -98,12 +98,10 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 @stop
 
 @section('js')
-    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-    <script src="{{ asset('js/admin/anuncios.js') }}"></script>
+    <script src="{{ asset('js/admin/listar-anuncios.js') }}"></script>
     <script>
         var dt = new DataTable('#datatable-anuncios', {
             order: [

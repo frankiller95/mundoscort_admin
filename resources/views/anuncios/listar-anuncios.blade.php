@@ -101,6 +101,7 @@
 @stop
 
 @section('js')
+    <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.8/b-3.0.2/r-3.0.2/datatables.min.js"></script>
     <script src="{{ asset('js/admin/listar-anuncios.js') }}"></script>
     <script>
         var dt = new DataTable('#datatable-anuncios', {
